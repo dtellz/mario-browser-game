@@ -42,33 +42,33 @@ scene("game", ({ level, score }) => {
 
     const maps = [
         [ //level 1
-            '=                                                     =',
-            '=                                                     =',
-            '=                                       ¿             =',
-            '=                                                     =',
-            '=                                                     =',
-            '=       ^          *                    %             =',
-            '=                                                     =',
-            '=          $$$$   ^ $$$$                              =',
-            '=        ======$$========             b  b            =',
-            '=    %                             b  b  b  b     -+  =',
-            '=                               b  b  b  b  b  b  ()  =',
-            '=            ^        ^         b  b  b  b  b  b  ()  =',
-            '==========================   ====  =  =  =  =  ========',],
+            '=                                                                                                     =',
+            '=                                                                                                     =',
+            '=                                       ¿                                                             =',
+            '=                                                                                                     =',
+            '=                                                                                                     =',
+            '=       ^          *                    %                                                             =',
+            '=                                                                                                     =',
+            '=          $$$$   ^ $$$$                                                                              =',
+            '=        ======$$========            $b$$b$                                                           =',
+            '=    %                           $ b  b  b  b            *                                         -+ =',
+            '=                               b  b  b  b  b $b                                                   () =',
+            '=                     ^         b  b  b $b  b  b                                  ^                () =',
+            '==========================   ====  =  =¿¿=  =  =============       ====================================',],
         [ //level 2
-            '€                                                 $   €',
-            '€                                                     €',
-            '€                                                 ¿   €',
-            '€                                            €        €',
-            '€                                      €€             €',
-            '€                  *             €€               %   €',
-            '€                          €€                         €',
-            '€          $$$$   z $$$$ ^                            €',
-            '€           €€€€$$€€€€€€€                             €',
-            '€     %  x                                         -+ €',
-            '€       xxx                                        () €',
-            '€      xxxxxx      z  ^                         z  () €',
-            '!!!!!!!!!!!!!!!!!!!!!!!  !!!!!                 !!!!!!!!',]
+            '€                                                 $                                                  €',
+            '€                                                                                                    €',
+            '€                                                 ¿                                                  €',
+            '€                                            €                                                       €',
+            '€                                      €€                                                            €',
+            '€                  *             €€                                                           %      €',
+            '€                          €€                                                                        €',
+            '€          $$$$   z $$$$ ^                                                                           €',
+            '€           €€€€$$€€€€€€€                                                                            €',
+            '€     %  x                                                                                        -+ €',
+            '€       xxx                                                                                       () €',
+            '€      xxxxxx      z  ^                         z                                                 () €',
+            '!!!!!!!!!!!!!!!!!!!!!!!  !!!!!                 !!!!!!!!!!!!!!!!!!!!        !!!!!!!!!!!!!!!!!!!!!!!!!!!',]
     ]
 
     /*
@@ -196,7 +196,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
             destroy(d);
             score = score + 5;
         } else {
-            go('lose', { score: scoreLabel.value });
+            go('lose', { score: scoreLabel.value, level: level });
             destroy(player);
         }
     })
@@ -223,7 +223,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
     player.action(() => {
         camPos(player.pos); // with camPos we set camera position to follow mario
         if (player.pos.y >= FALL_DEATH) {
-            go('lose', { score: scoreLabel.value });
+            go('lose', { score: scoreLabel.value, level: level });
         }
     })
 
@@ -250,8 +250,18 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
 
 })
 
-scene('lose', ({ score }) => {
-    add([text(score, 32), origin('center'), pos(width() / 2, height() / 2)]);
+scene('lose', ({ score, level }) => {
+    level = level + 1;
+    keyPress('space', () => {
+        start("game", { level: 0, score: 0 });
+    });
+    add([text(`Game Over! Your score: ${score} 
+  You reached level: ${level}
+    Refresh to play again.
+    ` , 16), origin('center'), pos(width() / 2, height() / 2),
+
+    ]);
+
 })
 
 start("game", { level: 0, score: 0 })
