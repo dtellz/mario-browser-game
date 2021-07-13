@@ -16,3 +16,11 @@ Space key : jump.
 Look for secret boxes!
 
 PS: Game will grow eventually and bugs will be fixed
+
+## UPDATE NOTES
+
+v01.01 map changes
+v01.02 few bugs solved (still some known remain)
+v01.10 added a menu at the begining of the game
+v01.11 added an option at main menu to change the dificulty of the game
+v01.12 few bugs solved derived from the new menus
