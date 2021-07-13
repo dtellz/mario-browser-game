@@ -218,7 +218,9 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
         keyPress('down', () => {
             go('game', {
                 score: scoreLabel.value,
-                level: (level + 1) % maps.length
+                level: (level + 1) % maps.length,
+                mov_speed: MOVE_SPEED,
+                en_speed: ENEMY_SPEED
             });
         })
     })
