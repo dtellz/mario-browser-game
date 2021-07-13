@@ -6,10 +6,10 @@ kaboom({
     clearColor: [0, 0, 0, 1],
 })
 
-const MOVE_SPEED = 120; //sets difficulty
+let MOVE_SPEED = 120; //sets difficulty
 const JUMP_FORCE = 400;
 const BIG_JUMP_FORCE = 500;
-const ENEMY_SPEED = 30;
+let ENEMY_SPEED = 30;
 const FALL_DEATH = 400;
 let isJumping;
 let current_jump_force = JUMP_FORCE;
@@ -37,7 +37,11 @@ loadSprite('blue-evil-mushroom', 'SvV4ueD.png')
 loadSprite('blue-surprise', 'RMqCc1G.png')
 
 
-scene("game", ({ level, score }) => {
+scene("game", ({ level, score, mov_speed, en_speed }) => {
+
+    MOVE_SPEED = mov_speed;
+    ENEMY_SPEED = en_speed;
+
     layers(['bg', 'obj', 'ui'], 'obj') // in [] we have game layers. the last one is the default layer.
 
     const maps = [
@@ -60,13 +64,13 @@ scene("game", ({ level, score }) => {
             '€                                                                                                    €',
             '€                                                 ¿                                                  €',
             '€                                            €                                                       €',
-            '€                                      €€                                                            €',
-            '€                  *             €€                                                           %      €',
-            '€                          €€                                                                        €',
+            '€                                      €€       €€€€€€€€€                      €€€€€€                €',
+            '€                  *             €€                                  €€€€€€                   %      €',
+            '€                          €€                               €€€€€€                                   €',
             '€          $$$$   z $$$$ ^                                                                           €',
             '€           €€€€$$€€€€€€€                                                                            €',
             '€     %  x                                                                                        -+ €',
-            '€       xxx                                                                                       () €',
+            '€       xxx                                                          €€€                          () €',
             '€      xxxxxx      z  ^                         z                                                 () €',
             '!!!!!!!!!!!!!!!!!!!!!!!  !!!!!                 !!!!!!!!!!!!!!!!!!!!        !!!!!!!!!!!!!!!!!!!!!!!!!!!',]
     ]
@@ -253,15 +257,138 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
 scene('lose', ({ score, level }) => {
     level = level + 1;
     keyPress('space', () => {
-        start("game", { level: 0, score: 0 });
+        go("menu");
     });
-    add([text(`Game Over! Your score: ${score} 
-  You reached level: ${level}
-    Refresh to play again.
-    ` , 16), origin('center'), pos(width() / 2, height() / 2),
+    add([
+        text(`Game Over! Your score: ${score} 
+You reached level: ${level}
+    
+press SPACE to play again.` , 16),
+        origin('center'),
+        pos(width() / 2,
+            height() / 2),
 
     ]);
 
 })
+//lets try to make a MENU
+scene("menu", () => {
+    add([
+        text("MARIO kaBOOOOM!", 24),
+        pos(20, 80),   //POSITION MIGHT HAVE TO BE SET AS WE DID BEFORE DUE TO GAME SCREEN SIZE OF THE PROJECT
+        color(220, 220, 220)
+    ])
+    add([
+        text("Main Menu", 22),
+        pos(100, 130),   //POSITION MIGHT HAVE TO BE SET AS WE DID BEFORE DUE TO GAME SCREEN SIZE OF THE PROJECT
+        color(220, 220, 220)
+    ])
+    //LET'S ADD BUTTONS FOR PLAYER CONTROL OVER THE MENU
+    add([
+        rect(170, 25),
+        pos(120, 180),
+        "button",
+        {
+            clickAction: () => go("game", { level: 0, score: 0, mov_speed: 120, en_speed: 30 }),
+        }
+    ]);
+    add([
+        text("Play game", 18),
+        pos(122, 182),
+        color(0, 0, 0)
+    ]);
 
-start("game", { level: 0, score: 0 })
+    add([
+        rect(170, 25),
+        pos(120, 210),
+        "button",
+        {
+            clickAction: () => go("dificultySelection"), //IMPLEMENT HERE THE LEVEL DIFICULTY SELECTION
+        }
+    ]);
+    add([
+        text("DIFICULTY", 18),
+        pos(122, 212),
+        color(0, 0, 0)
+    ]);
+
+    action("button", b => {
+        if (b.isHovered())
+            b.use(color(128, 128, 128));
+        else
+            b.use(color(192, 192, 192));
+        if (b.isClicked())
+            b.clickAction();
+    });
+
+})
+scene("dificultySelection", () => {
+    add([
+        text("Choose game", 24),
+        pos(20, 80),   //POSITION MIGHT HAVE TO BE SET AS WE DID BEFORE DUE TO GAME SCREEN SIZE OF THE PROJECT
+        color(220, 220, 220)
+    ])
+    add([
+        text("dificulty!", 22),
+        pos(20, 110),   //POSITION MIGHT HAVE TO BE SET AS WE DID BEFORE DUE TO GAME SCREEN SIZE OF THE PROJECT
+        color(220, 220, 220)
+    ])
+    //LET'S ADD BUTTONS FOR PLAYER CONTROL OVER THE MENU
+    add([
+        rect(140, 25),
+        pos(40, 180),
+        "button",
+        {
+            clickAction: () => go("game", { level: 0, score: 0, mov_speed: 90, en_speed: 25 }),
+        }
+    ]);
+    add([
+        text("EASY", 18),
+        pos(72, 182),
+        color(0, 0, 0)
+    ]);
+
+    add([
+        rect(140, 25),
+        pos(40, 210),
+        "button",
+        {
+            clickAction: () => go("game", { level: 0, score: 0, mov_speed: 120, en_speed: 30 }),
+        }
+    ]);
+    add([
+        text("MEDIUM", 18),
+        pos(58, 212),
+        color(0, 0, 0)
+    ]);
+
+    add([
+        rect(140, 25),
+        pos(40, 240),
+        "button",
+        {
+            clickAction: () => go("game", { level: 0, score: 0, mov_speed: 240, en_speed: 80 }),
+        }
+    ]);
+    add([
+        text("HARD", 18),
+        pos(72, 242),
+        color(0, 0, 0)
+    ]);
+
+    action("button", b => {
+        if (b.isHovered())
+            b.use(color(128, 128, 128));
+        else
+            b.use(color(192, 192, 192));
+        if (b.isClicked())
+            b.clickAction();
+    });
+
+});
+
+
+
+start("menu");
+
+    // start("game", { level: 0, score: 0 });
