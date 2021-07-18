@@ -14,6 +14,10 @@ const FALL_DEATH = 400;
 let isJumping;
 let current_jump_force = JUMP_FORCE;
 
+loadSound('jump', './sounds/smb_jump-small.wav');
+loadSound('getCoin', './sounds/smb_coin.wav');
+loadSound('die', './sounds/smb_mariodie.wav');
+loadSound('gameOver', './sounds/smb_gameover.wav');
 
 loadRoot('https://i.imgur.com/')
 loadSprite('coin', 'wbKxhcd.png')
@@ -45,7 +49,8 @@ scene("game", ({ level, score, mov_speed, en_speed }) => {
     layers(['bg', 'obj', 'ui'], 'obj') // in [] we have game layers. the last one is the default layer.
 
     const maps = [
-        [ //level 1
+
+        [//level 1
             '=                                                                                                     =',
             '=                                                                                                     =',
             '=                                       ¿                                                             =',
@@ -54,10 +59,10 @@ scene("game", ({ level, score, mov_speed, en_speed }) => {
             '=       ^          *                    %                                                             =',
             '=                                                                                                     =',
             '=          $$$$   ^ $$$$                                                                              =',
-            '=        ======$$========            $b$$b$                                                           =',
+            '=        ======$$========            $b$$b$                                            ^              =',
             '=    %                           $ b  b  b  b            *                                         -+ =',
             '=                               b  b  b  b  b $b                                                   () =',
-            '=                     ^         b  b  b $b  b  b                                  ^                () =',
+            '=                     ^         b  b  b $b  b  b                       ^^^  ^^^  ^^^ ^  ^ ^ ^ ^ ^  () =',
             '==========================   ====  =  =¿¿=  =  =============       ====================================',],
         [ //level 2
             '€                                                 $                                                  €',
@@ -72,7 +77,21 @@ scene("game", ({ level, score, mov_speed, en_speed }) => {
             '€     %  x                                                                                        -+ €',
             '€       xxx                                                          €€€                          () €',
             '€      xxxxxx      z  ^                         z                                                 () €',
-            '!!!!!!!!!!!!!!!!!!!!!!!  !!!!!                 !!!!!!!!!!!!!!!!!!!!        !!!!!!!!!!!!!!!!!!!!!!!!!!!',]
+            '!!!!!!!!!!!!!!!!!!!!!!!  !!!!!                 !!!!!!!!!!!!!!!!!!!!        !!!!!!!!!!!!!!!!!!!!!!!!!!!',],
+        [ //level 3 (testing)
+            '=                                                                                           -+        =',
+            '=                                                                                           ()        =',
+            '=                                       ¿                                                   ()        =',
+            '=                                                                                      ==   ==        =',
+            '=                                                                                                     =',
+            '=       ^          *                    %                ======                  ======               =',
+            '=                                           =========                                                 =',
+            '=          $$$$   ^ $$$$                                                  =======                     =',
+            '=        ======$$========            $b$$b$                                                           =',
+            '=    %                          =======            *              ========                            =',
+            '=                                                                                                     =',
+            '=== =========                   ^                                           ^                         =',
+            '=                                  =  =¿¿=  =                                                         =',],
     ]
 
     /*
@@ -200,6 +219,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
             destroy(d);
             score = score + 5;
         } else {
+            play('die');
             go('lose', { score: scoreLabel.value, level: level });
             destroy(player);
         }
@@ -211,6 +231,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
     })
     player.collides('coin', (c) => {
         destroy(c);
+        play('getCoin');
         scoreLabel.value++; //mario earns cash on hitting coins
         scoreLabel.text = scoreLabel.value;
     })
@@ -229,6 +250,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
     player.action(() => {
         camPos(player.pos); // with camPos we set camera position to follow mario
         if (player.pos.y >= FALL_DEATH) {
+            play('die');
             go('lose', { score: scoreLabel.value, level: level });
         }
     })
@@ -249,6 +271,8 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
     });
     keyPress('space', () => {
         if (player.grounded()) {
+            play('jump');
+            //player.sound('jump');
             isJumping = true;
             player.jump(current_jump_force)
         }
