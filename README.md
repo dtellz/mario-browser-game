@@ -28,3 +28,5 @@ v01.10 added a menu at the begining of the game
 v01.11 added an option at main menu to change the dificulty of the game
 
 v01.12 few bugs solved derived from the new menus
+
+v02.00 New level added, starting to add SFX sounds
