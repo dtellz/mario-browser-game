@@ -14,10 +14,10 @@ const FALL_DEATH = 400;
 let isJumping;
 let current_jump_force = JUMP_FORCE;
 
-loadSound('jump', './sounds/smb_jump-small.wav');
-loadSound('getCoin', './sounds/smb_coin.wav');
-loadSound('die', './sounds/smb_mariodie.wav');
-loadSound('gameOver', './sounds/smb_gameover.wav');
+loadSound('jump', 'https://github.com/dtellz/mario_game/blob/main/docs/sounds/smb_jump-small.wav');
+loadSound('getCoin', 'https://github.com/dtellz/mario_game/blob/main/docs/sounds/smb_coin.wav');
+loadSound('die', 'https://github.com/dtellz/mario_game/blob/main/docs/sounds/smb_mariodie.wav');
+loadSound('gameOver', 'https://github.com/dtellz/mario_game/blob/main/docs/sounds/smb_gameover.wav');
 
 loadRoot('https://i.imgur.com/')
 loadSprite('coin', 'wbKxhcd.png')
