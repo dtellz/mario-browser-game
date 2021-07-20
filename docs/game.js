@@ -219,7 +219,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
             destroy(d);
             score = score + 5;
         } else {
-            play('die');
+            //play('die'); SFX implementation
             go('lose', { score: scoreLabel.value, level: level });
             destroy(player);
         }
@@ -231,7 +231,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
     })
     player.collides('coin', (c) => {
         destroy(c);
-        play('getCoin');
+        //play('getCoin'); SFX implementation
         scoreLabel.value++; //mario earns cash on hitting coins
         scoreLabel.text = scoreLabel.value;
     })
@@ -250,7 +250,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
     player.action(() => {
         camPos(player.pos); // with camPos we set camera position to follow mario
         if (player.pos.y >= FALL_DEATH) {
-            play('die');
+            //play('die'); SFX implementation
             go('lose', { score: scoreLabel.value, level: level });
         }
     })
@@ -271,8 +271,7 @@ loadSprite('blue-surprise', 'RMqCc1G.png')
     });
     keyPress('space', () => {
         if (player.grounded()) {
-            play('jump');
-            //player.sound('jump');
+            //play('jump'); SFX implementation
             isJumping = true;
             player.jump(current_jump_force)
         }
